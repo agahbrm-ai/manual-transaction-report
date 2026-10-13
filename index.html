@@ -1,0 +1,573 @@
+<!doctype html>
+<!DOCTYPE html>
+
+<html dir="rtl" lang="fa"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>گزارش مدیریتی تراکنش دستی خودکار</title>
+<style>
+:root{
+  --bg:#eef3f8;
+  --bg2:#f8fbfd;
+  --card:#ffffff;
+  --ink:#16202b;
+  --muted:#627487;
+  --line:#dde6ef;
+  --navy:#0f2d4a;
+  --navy-2:#143b63;
+  --blue:#1f6feb;
+  --teal:#138a9c;
+  --teal-2:#39b7c4;
+  --green:#13865f;
+  --orange:#e57e25;
+  --red:#cf4a4a;
+  --gold:#d4a73d;
+  --shadow:0 12px 36px rgba(15,45,74,.08);
+  --soft-shadow:0 6px 18px rgba(19,39,61,.06);
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top right, rgba(57,183,196,.10), transparent 20%),
+    linear-gradient(180deg,#eff5fa 0%, #eef3f8 25%, #f6f9fc 100%);
+  font-family:'IRANYekanX','IRANYekan','Yekan Bakh FaNum','Yekan Bakh','IRANSansX','IRANSans','Vazirmatn',Tahoma,Arial,sans-serif !important;
+  line-height:1.78;
+}
+#reportRoot,#editToolbar,#editHelp,button,input,select,textarea,table,th,td,h1,h2,h3,h4,h5,h6,p,span,div,a,b,strong,small{
+  font-family:'IRANYekanX','IRANYekan','Yekan Bakh FaNum','Yekan Bakh','IRANSansX','IRANSans','Vazirmatn',Tahoma,Arial,sans-serif !important;
+}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 24px 72px}
+.hero{
+  position:relative;overflow:hidden;border-radius:28px;padding:28px 34px 30px;
+  background:linear-gradient(135deg,#0c2640 0%,#123559 48%,#0f5870 100%);
+  box-shadow:0 18px 48px rgba(12,38,64,.22);
+  color:#fff;border:1px solid rgba(255,255,255,.06)
+}
+.hero:before{content:'';position:absolute;inset:auto auto -60px -40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.06);filter:blur(8px)}
+.hero:after{content:'';position:absolute;inset:-80px -90px auto auto;width:260px;height:260px;border-radius:50%;background:rgba(57,183,196,.18);filter:blur(18px)}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1}
+.hero-breadcrumb{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.launch-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.launch-tag b{font-size:13px;color:#fff}
+.hero-mini{font-size:12px;opacity:.85}
+.hero h1{margin:14px 0 8px;font-size:34px;line-height:1.35;font-weight:900;letter-spacing:-.2px;position:relative;z-index:1}
+.hero p{margin:0;max-width:980px;font-size:15px;color:rgba(255,255,255,.90);position:relative;z-index:1}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;position:relative;z-index:1}
+.hero-pills .pill,.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);padding:8px 12px;border-radius:999px;font-size:12px;color:#fff}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px;position:relative;z-index:1}
+.hero-grid .hero-stat{padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px)}
+.hero-grid .k{font-size:12px;opacity:.82;margin-bottom:6px}
+.hero-grid .v{font-size:25px;font-weight:900;line-height:1.2}
+.hero-grid .d{font-size:12px;opacity:.88;margin-top:4px}
+.hero-grid .v.warn{color:#ffd59e}
+.executive-brief{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:18px}
+.executive-main,.executive-side,.card,.chart-card,.table-wrap{background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);box-shadow:var(--soft-shadow);border-radius:22px}
+.executive-main{padding:22px 24px}
+.executive-main h3,.executive-side h3{margin:0 0 10px;color:var(--navy);font-size:20px}
+.executive-main .lead{font-size:16px;margin:0 0 12px}
+.executive-main ul{margin:0;padding-right:20px}
+.executive-main li{margin:8px 0}
+.executive-side{padding:18px}
+.mini-kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
+.mini-kpi .item{background:linear-gradient(180deg,#f8fbff,#fff);padding:14px;border-radius:16px;border:1px solid #e6eef6}
+.mini-kpi .item .t{font-size:11px;color:var(--muted)}
+.mini-kpi .item .n{font-size:24px;font-weight:900;color:var(--navy);line-height:1.25;margin-top:5px}
+.mini-kpi .item .s{font-size:11px;color:var(--muted);margin-top:4px}
+.priority-box{margin-top:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(180deg,#fff9f2,#fff);border:1px solid #f1dfca}
+.priority-box b{color:#8e4b10}
+.one-minute-bar{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 2px}
+.one-minute-chip{padding:10px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:var(--soft-shadow);font-size:12px}
+.one-minute-chip b{color:var(--navy)}
+.section{margin-top:24px}
+.section-title{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:21px;color:var(--navy);font-weight:900}
+.section-title:before{content:'';width:8px;height:28px;border-radius:999px;background:linear-gradient(180deg,var(--teal),var(--blue))}
+.kpis{grid-template-columns:repeat(4,1fr)}
+.grid{display:grid;gap:14px}
+.card{padding:18px}
+.kpi{min-height:138px;position:relative;overflow:hidden}
+.kpi:after{content:'';position:absolute;inset:auto -10px -20px auto;width:100px;height:100px;border-radius:50%;background:rgba(31,111,235,.05)}
+.kpi .label{font-size:12px;color:var(--muted);margin-bottom:10px;font-weight:700}
+.kpi .num{font-size:30px;font-weight:900;color:var(--navy);line-height:1.2;letter-spacing:-.2px}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:7px}
+.kpi.hot{background:linear-gradient(180deg,#fff8f2,#ffffff);border-color:#f3dcc7}
+.kpi.hot .num{color:var(--orange)}
+.callout{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.big-message{padding:22px}
+.big-message h2{font-size:24px;margin:0 0 10px;color:var(--navy);font-weight:900}
+.big-message .lead{font-size:16px;margin:0 0 12px}
+.big-message ul{margin:10px 0 0;padding-right:20px}
+.big-message li{margin:7px 0}
+.signal{display:flex;align-items:center;justify-content:center;min-height:240px;text-align:center;background:linear-gradient(160deg,#f7fbff,#fff)}
+.signal .huge{font-size:42px;font-weight:900;color:var(--orange);line-height:1.15}
+.signal .caption{color:var(--muted);font-size:13px}.signal .arrow{font-size:26px;color:var(--teal);margin:4px 0}
+.table-wrap{overflow:auto;padding:0;background:#fff}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:13px 14px;border-bottom:1px solid #e9eef4;text-align:right;vertical-align:top;font-size:13px}
+th{background:#f6f9fc;color:#34465a;font-weight:900;position:sticky;top:0;z-index:1}
+tr:hover td{background:#fafcff}
+tr:last-child td{border-bottom:none}
+.em{font-weight:900;color:var(--navy)}
+.pos{color:var(--green);font-weight:800}.neg{color:var(--red);font-weight:800}.warn{color:var(--orange);font-weight:800}.tiny{font-size:11px;color:var(--muted)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart-card{padding:20px}
+.chart-title{font-weight:900;color:var(--navy);font-size:16px}.chart-sub{font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:16px}
+.bar-row{display:grid;grid-template-columns:240px 1fr 74px;align-items:center;gap:10px;margin:12px 0}
+.bar-label{font-size:12px;font-weight:700;color:#304255}.track{height:16px;background:#edf3f8;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue),#62a8f0)}.fill.orange{background:linear-gradient(90deg,var(--orange),#f0b36b)}.fill.teal{background:linear-gradient(90deg,var(--teal),#62c7cf)}.value{font-size:12px;font-weight:800;color:#32475b}
+.stack{display:flex;height:18px;background:#eef3f8;border-radius:999px;overflow:hidden}.seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800;white-space:nowrap}.seg.s1{background:#2b71d8}.seg.s2{background:#4ea9c7}.seg.s3{background:#ef9643}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:13px}.legend span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}.dot{width:10px;height:10px;border-radius:50%}.dot.d1{background:#2b71d8}.dot.d2{background:#4ea9c7}.dot.d3{background:#ef9643}
+.channel-bars .mini-row{display:grid;grid-template-columns:92px 1fr 110px;gap:10px;align-items:center;margin:10px 0;font-size:12px}.channel-bars .mini-track{height:13px;background:#edf2f7;border-radius:999px;overflow:hidden}.channel-bars .mini-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-2));border-radius:999px}
+.footer-note{margin-top:10px;font-size:11px;color:var(--muted)}
+.manager-box{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.manager-item{padding:18px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--soft-shadow)}
+.manager-item h4{margin:0 0 10px;font-size:16px;color:var(--navy)}
+.manager-item p{margin:0;font-size:13px;color:#33485c}
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1100px){
+  .hero-grid,.manager-box,.kpis{grid-template-columns:repeat(2,1fr)}
+  .callout,.split,.executive-brief{grid-template-columns:1fr}
+}
+@media (max-width: 760px){
+  .wrap{padding:18px 14px 44px}
+  .hero{padding:20px 18px}
+  .hero h1{font-size:27px}
+  .hero-grid,.kpis,.manager-box,.mini-kpi{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:1fr}
+  .channel-bars .mini-row{grid-template-columns:1fr}
+  .one-minute-bar{flex-direction:column}
+}
+@media print{
+  #editToolbar,
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .hero,.card,.chart-card,.table-wrap,.executive-main,.executive-side,.manager-item{box-shadow:none}
+}
+
+/* ===== FINAL COMPACT MANAGEMENT OVERRIDES ===== */
+@font-face{
+  font-family:'MgmtFa';
+  src: local('IRANSansXFaNum'),
+       local('IRANSansX'),
+       local('IRANYekanXFaNum'),
+       local('IRANYekanX'),
+       local('Yekan Bakh FaNum'),
+       local('Yekan Bakh'),
+       local('IRANSans'),
+       local('Vazirmatn');
+  font-style:normal;
+  font-weight:100 900;
+  font-display:swap;
+}
+html,body,#reportRoot,#reportRoot *,#editToolbar,
+body{line-height:1.62}
+.wrap{max-width:1240px;padding:20px 22px 52px}
+.section{margin-top:18px}
+.section-title{font-size:20px;margin-bottom:10px}
+.section-title:before{height:24px;width:7px}
+.card,.chart-card{border-radius:18px}
+.card{padding:16px}
+.chart-card{padding:17px 18px}
+.hero{padding:22px 26px 24px;border-radius:22px}
+.hero h1{font-size:31px;margin:10px 0 6px}
+.hero-pills{margin-top:13px;gap:8px}
+.hero-pills .pill,.badge{padding:6px 10px}
+.hero-grid{gap:10px;margin-top:15px}
+.hero-grid .hero-stat{padding:12px 14px;border-radius:15px}
+.hero-grid .v{font-size:23px}
+.hero-grid .d{font-size:11px}
+.one-minute-bar{margin:12px 0 0;gap:8px}
+.one-minute-chip{padding:8px 11px}
+.executive-brief{margin-top:12px;gap:12px}
+.executive-brief.single{grid-template-columns:1fr}
+.executive-main{padding:17px 20px}
+.executive-main h3{font-size:18px;margin-bottom:7px}
+.executive-main h3 + h3{margin-top:0}
+.executive-main li{margin:5px 0}
+.kpis{gap:10px}
+.kpi{min-height:116px;padding:15px}
+.kpi .num{font-size:27px}
+.callout{gap:10px}
+.big-message{padding:18px}
+.big-message h2{font-size:21px}
+.big-message li{margin:5px 0}
+.signal{min-height:205px}
+.signal .huge{font-size:36px}
+.split{gap:12px}
+
+/* Channel block: fill the old empty half and keep it compact */
+.channel-section .card{padding:16px 18px}
+.channel-dashboard{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);
+  gap:18px;
+  align-items:stretch;
+}
+.channel-panel{
+  padding:2px 2px 0;
+}
+.channel-panel-title{
+  font-size:15px;
+  font-weight:900;
+  color:var(--navy);
+  margin-bottom:1px;
+}
+.channel-panel-sub{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.channel-bars{
+  display:grid;
+  gap:8px;
+  margin-top:4px;
+}
+.channel-bars .mini-row{
+  display:grid;
+  grid-template-columns:80px minmax(220px,1fr) 120px;
+  align-items:center;
+  gap:10px;
+  margin:0;
+  min-height:25px;
+  font-size:12px;
+}
+.channel-bars .mini-row > span{
+  font-weight:700;
+  color:#33495c;
+}
+.channel-bars .mini-row > b{
+  text-align:left;
+  font-size:12px;
+  color:#263a4d;
+  white-space:nowrap;
+}
+.channel-bars .mini-track{
+  height:11px;
+  background:#eaf0f5;
+  border-radius:999px;
+  overflow:hidden;
+}
+.channel-bars .mini-fill{
+  height:100%;
+  min-width:2px;
+  background:linear-gradient(90deg,#118da0,#36b4c2);
+  border-radius:999px;
+}
+.channel-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.channel-summary-card{
+  border:1px solid #e3ebf2;
+  border-radius:14px;
+  padding:11px 12px;
+  background:linear-gradient(180deg,#f9fbfd,#fff);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:74px;
+}
+.channel-summary-card.primary{
+  background:linear-gradient(135deg,#eef9fb,#ffffff);
+  border-color:#cce7eb;
+}
+.channel-summary-card.compact{min-height:70px}
+.channel-summary-card .cs-label{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:700;
+}
+.channel-summary-card strong{
+  font-size:23px;
+  line-height:1.15;
+  color:var(--navy);
+  margin:3px 0;
+}
+.channel-summary-card.primary strong{color:#108b9e}
+.channel-summary-card .cs-sub{
+  font-size:10px;
+  color:#687a8b;
+}
+.channel-insight{
+  grid-column:1 / -1;
+  background:#f5f9fc;
+  border:1px dashed #d5e2ed;
+  border-radius:13px;
+  padding:10px 12px;
+  font-size:11px;
+  color:#42586c;
+}
+.channel-insight b{color:var(--navy)}
+
+/* Bottom comparison cards */
+section.split > .chart-card{
+  min-height:244px;
+}
+.chart-title{font-size:15px}
+.chart-sub{margin-bottom:12px}
+.bar-row{
+  grid-template-columns:220px minmax(120px,1fr) 68px;
+  gap:9px;
+  margin:9px 0;
+}
+.track{height:14px}
+.value{font-size:11px}
+
+/* FIX: sentiment chart colors */
+.stack-wrap{margin-top:10px}
+.stack{
+  height:31px;
+  border-radius:9px;
+  overflow:hidden;
+  border:1px solid #e2e8ee;
+  background:#edf2f6;
+}
+.seg{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff !important;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+  text-shadow:0 1px 1px rgba(0,0,0,.12);
+}
+.seg.conf{background:linear-gradient(90deg,#c67c19,#e2a33b) !important}
+.seg.neu{background:linear-gradient(90deg,#71869b,#9aa9b7) !important}
+.seg.neg{background:linear-gradient(90deg,#c33f48,#df6368) !important}
+.legend{margin-top:10px;gap:12px}
+.legend span{font-size:10px}
+.legend .dot{width:9px;height:9px}
+.legend span:nth-child(1) .dot{background:#d38a24 !important}
+.legend span:nth-child(2) .dot{background:#8193a4 !important}
+.legend span:nth-child(3) .dot{background:#cf4a53 !important}
+
+/* Tables: denser and consistent font */
+.table-wrap{border-radius:15px}
+th,td{padding:10px 11px;font-size:12px;line-height:1.55}
+th{font-size:11.5px}
+td .em,.em{font-weight:900}
+.note{font-size:11px;padding:11px 13px}
+.footer-note{margin-top:8px}
+
+/* Remove accidental visual bulk from user pasted markup */
+#reportRoot span[style*="background-color"]{background-color:transparent !important}
+#reportRoot [style*="white-space: pre-wrap"]{white-space:normal !important}
+
+/* Responsive */
+@media(max-width:950px){
+  .channel-dashboard{grid-template-columns:1fr}
+  .channel-summary{grid-template-columns:repeat(3,1fr)}
+  .channel-insight{grid-column:1/-1}
+}
+@media(max-width:700px){
+  .wrap{padding:14px 11px 40px}
+  .channel-summary{grid-template-columns:1fr 1fr}
+  .channel-bars .mini-row{grid-template-columns:70px 1fr 98px}
+  .bar-row{grid-template-columns:1fr}
+}
+</style>
+<meta content="گزارش مدیریتی و مقایسه‌ای پایش تراکنش دستی خودکار" name="description"/>
+<style>
+@media print {
+  .channel-dashboard{display:block !important;}
+  .channel-panel{width:100% !important;}
+  .channel-summary{display:flex !important; flex-wrap:wrap !important; gap:7px !important; margin-top:12px !important;}
+  .channel-summary-card{display:block !important; flex:1 1 30% !important; min-height:auto !important; padding:9px 10px !important;}
+  .channel-summary-card strong{display:block !important; font-size:19px !important;}
+  .channel-insight{width:100% !important; margin-top:2px !important; padding:8px 10px !important;}
+  .channel-bars .mini-row{display:grid !important; grid-template-columns:70px 1fr 105px !important;}
+  .channel-section .card{padding:13px 15px !important;}
+  .channel-summary-card .cs-label,.channel-summary-card .cs-sub{font-size:9px !important;}
+}
+</style>
+</head>
+<body>
+
+
+<div class="" id="reportRoot">
+<div class="wrap">
+<header class="hero">
+<div class="hero-top">
+<div class="hero-breadcrumb">
+<span class="launch-tag"><span><span style="font-size: 34px; letter-spacing: -0.2px; background-color: initial">گزارش «تراکنش دستی خودکار»</span></span></span></div></div>
+<div class="hero-pills">
+<span class="pill">گزارش پایه: ۷ تا ۲۶ تیر ۱۴۰۵</span>
+<span class="pill">پایش جدید: ۱۰ شهریور تا ۱۰ مهر ۱۴۰۵</span>
+<span class="pill">جامعه تحلیل: ۱۵٬۴۴۸ تعامل یکتا</span>
+</div>
+<div class="hero-grid">
+<div class="hero-stat">
+<div class="k">برداشت مدیریتی</div>
+<div class="v warn">مسئله حذف نشده</div>
+<div class="d">ریسک از سناریوی رفت‌وبرگشتی به سمت رویدادهای شرکتی جابه‌جا شده است.</div>
+</div>
+<div class="hero-stat">
+<div class="k">ریسک غالب جدید</div>
+<div class="v">۴۵٫۳٪</div>
+<div class="d">افزایش سرمایه / حق‌تقدم / سهام جایزه / تسه</div>
+</div>
+<div class="hero-stat">
+<div class="k">شدت روزانه مسئله</div>
+<div class="v">۶٫۲۸</div>
+<div class="d">مورد قطعی در روز — تقریباً هم‌سطح پایه (۶٫۰۰)</div>
+</div>
+</div>
+</header>
+<div class="one-minute-bar">
+<div class="one-minute-chip"><b>نتیجه:</b> مشکل پابرجاست و صرفاً شکل بروز آن عوض شده است.</div>
+<div class="one-minute-chip"><b>پیام کلیدی:</b> سناریوی غالب از «رفت‌وبرگشت ناظر» به «رویدادهای شرکتی» جابه‌جا شده است.</div>
+<div class="one-minute-chip"><b>اقدام فوری:</b> کنترل منطق ثبت خودکار در کنار افزایش سرمایه، حق‌تقدم، سهام جایزه و تسه.</div>
+</div>
+<section class="executive-brief section single">
+<div class="executive-main">
+<h3>خلاصه مدیریتی</h3><h3><span style="font-size: 16px; color: rgb(22, 32, 43)">قابلیت «تراکنش دستی خودکار» هنوز تعامل ساز است؛ اما </span><b style="font-size: 16px; color: rgb(22, 32, 43)">کانون خطاها عوض شده</b><span style="font-size: 16px; color: rgb(22, 32, 43)">. در گزارش پایه، سناریوی اصلی «خروج ناظر → فروش در کارگزاری دیگر → ورود مجدد» بود؛ در پایش جدید، تقریباً نیمی از موارد قطعی به </span><b style="font-size: 16px; color: rgb(22, 32, 43)">رویدادهای شرکتی</b><span style="font-size: 16px; color: rgb(22, 32, 43)"> مربوط است.</span></h3>
+<ul>
+<li><b>۲۰۱ مورد قطعی</b> از اثر مستقیم قابلیت در پایش جدید شناسایی شده است.</li>
+<li><b>۴۵٫۳٪</b> از این موارد به افزایش سرمایه / حق‌تقدم / سهام جایزه / تسه مربوط است.</li>
+<li>بار روزانه مسئله از <b>۶٫۰۰</b> به <b>۶٫۲۸</b> مورد رسیده؛ بنابراین نشانه‌ای از افت محسوس شدت مسئله دیده نمی‌شود.</li>
+<li>تجربه غالب مشتری هنوز <b>نگرانی و سردرگمی</b> درباره تعداد واقعی دارایی، امکان فروش و صحت سود/زیان است.</li></ul></div></section>
+<section class="section"><h2 class="section-title">شاخص‌های کلیدی</h2>
+<div class="grid kpis">
+<div class="card kpi"><div class="label">تعامل یکتای پایش جدید</div><div class="num">۱۵٬۴۴۸</div></div>
+<div class="card kpi hot"><div class="label">مورد قطعی اثر قابلیت</div><div class="num">۲۰۱</div><div class="sub">شواهد صریح از اثر تراکنش دستی خودکار</div></div>
+<div class="card kpi"><div class="label">فراوانی روزانه مورد قطعی</div><div class="num">۶٫۲۸</div><div class="sub">تقریباً هم‌سطح گزارش پایه: ۶٫۰۰ مورد در روز</div></div>
+<div class="card kpi hot"><div class="label">سناریوی غالب جدید</div><div class="num">۴۵٫۳٪</div><div class="sub">افزایش سرمایه / حق‌تقدم / سهام جایزه / تسه</div></div>
+</div>
+</section>
+<section class="section callout">
+<div class="card big-message">
+<h2>مسئله حذف نشده؛ <span class="warn">الگوی مسئله جابه‌جا شده است</span></h2>
+<p class="lead">در گزارش اول، چرخه «خروج ناظر → فروش در کارگزاری دیگر → ورود مجدد» مهم‌ترین ریسک بود. در پایش جدید،<b> تداخل با رویدادهای شرکتی به محور اصلی تبدیل شده است.</b></p>
+<ul>
+<li>سهم سناریوی رفت‌وبرگشتی از <b>۳۳٫۳٪</b> در گزارش پایه به <b>۱۵٫۴٪</b> در سناریوی اصلی موارد جدید رسیده است.</li>
+<li>سهم افزایش سرمایه/حق‌تقدم/سهام جایزه از <b>۱۹٫۲٪</b> به <b>۴۵٫۳٪</b> رسیده و اکنون <b>ریسک غالب</b> است.</li>
+<li>بار روزانه مسئله کاهش محسوسی نشان نمی‌دهد: <b>۶٫۰۰</b> مورد/روز در گزارش پایه در برابر <b>۶٫۲۸</b> مورد/روز در پایش جدید.</li>
+<li>در موارد قطعی جدید، تجربه غالب مشتری همچنان <b>نگرانی و سردرگمی</b> درباره تعداد واقعی دارایی، امکان فروش و صحت سود/زیان است.</li>
+</ul>
+</div>
+<div class="card signal">
+<div>
+<div class="caption">جابجایی ریسک غالب</div>
+<div class="huge">۳۳٫۳٪</div>
+<div class="caption">رفت‌وبرگشت ناظر — گزارش پایه</div>
+<div class="arrow">↓</div>
+<div class="huge">۴۵٫۳٪</div>
+<div class="caption">رویدادهای شرکتی — پایش جدید</div>
+</div>
+</div>
+</section>
+<section class="section channel-section">
+<h2 class="section-title">ترکیب کانال‌های تعامل</h2><div class="card"><div class="channel-dashboard"><div class="channel-panel"><div class="channel-panel-title">توزیع تعاملات</div><div class="channel-panel-sub">سهم هر کانال از ۱۵٬۴۴۸ تعامل یکتا</div><div class="channel-bars">
+<div class="mini-row"><span>تماس</span><div class="mini-track"><div class="mini-fill" style="width:46.43%"></div></div><b>۷٬۱۷۲ | ۴۶٫۴٪</b></div>
+<div class="mini-row"><span>تیکت</span><div class="mini-track"><div class="mini-fill" style="width:26.02%"></div></div><b>۴٬۰۲۰ | ۲۶٫۰٪</b></div>
+<div class="mini-row"><span>شعبه</span><div class="mini-track"><div class="mini-fill" style="width:25.43%"></div></div><b>۳٬۹۲۸ | ۲۵٫۴٪</b></div>
+<div class="mini-row"><span>چت</span><div class="mini-track"><div class="mini-fill" style="width:2.06%"></div></div><b>۳۱۸ | ۲٫۱٪</b></div>
+<div class="mini-row"><span>کامنت</span><div class="mini-track"><div class="mini-fill" style="width:.06%"></div></div><b>۱۰ | ۰٫۱٪</b></div></div></div>
+<div class="channel-summary">
+<div class="channel-summary-card primary">
+<span class="cs-label">کانال غالب</span>
+<strong>۴۶٫۴٪</strong>
+<span class="cs-sub">تماس — ۷٬۱۷۲ تعامل</span>
+</div>
+<div class="channel-summary-card">
+<span class="cs-label">تیکت + شعبه</span>
+<strong>۵۱٫۴٪</strong>
+<span class="cs-sub">۷٬۹۴۸ تعامل</span>
+</div>
+<div class="channel-summary-card compact">
+<span class="cs-label">چت + کامنت</span>
+<strong>۲٫۲٪</strong>
+<span class="cs-sub">۳۲۸ تعامل</span>
+</div>
+<div class="channel-insight">بیش از نیمی از تعاملات از مسیرهای غیرتماسیِ تیکت و شعبه ثبت شده‌اند؛
+            اما تماس همچنان بزرگ‌ترین کانال منفرد است.
+          </div>
+</div>
+</div></div></section>
+<section class="section split">
+<div class="card chart-card">
+<div class="chart-title">تغییر دو سناریوی کلیدی</div>
+<div class="chart-sub">سهم از موارد باگ/اثر قطعی هر گزارش</div>
+<div class="bar-row"><div class="bar-label">رفت‌وبرگشت ناظر — گزارش پایه</div><div class="track"><div class="fill" style="width: 73.5099%;"></div></div><div class="value">۳۳٫۳٪</div></div>
+<div class="bar-row"><div class="bar-label">رفت‌وبرگشت ناظر — جدید</div><div class="track"><div class="fill teal" style="width: 33.9956%;"></div></div><div class="value">۱۵٫۴٪</div></div>
+<div class="bar-row"><div class="bar-label">رویدادهای شرکتی — گزارش پایه</div><div class="track"><div class="fill" style="width: 42.3841%;"></div></div><div class="value">۱۹٫۲٪</div></div>
+<div class="bar-row"><div class="bar-label">رویدادهای شرکتی — جدید</div><div class="track"><div class="fill orange" style="width: 100%"></div></div><div class="value">۴۵٫۳٪</div></div>
+<div class="tiny">مقیاس بصری تا ۵۰٪ تنظیم شده تا تغییر ترکیب بهتر دیده شود.</div>
+</div>
+<div class="card chart-card">
+<div class="chart-title">مقایسه حس مشتری</div>
+<div class="chart-sub"><span style="font-size: 11px">گزارش پایه</span></div>
+<div class="stack-wrap"><div class="stack"><div class="seg conf" style="width:42.5%">۴۲٫۵٪</div><div class="seg neu" style="width:34.2%">۳۴٫۲٪</div><div class="seg neg" style="width:23.3%">۲۳٫۳٪</div></div></div>
+<div class="tiny" style="margin-top:16px">پایش جدید</div>
+<div class="stack-wrap"><div class="stack"><div class="seg conf" style="width:76.1%">۷۶٫۱٪</div><div class="seg neu" style="width:4.5%">۴٫۵٪</div><div class="seg neg" style="width:19.4%">۱۹٫۴٪</div></div></div>
+<div class="legend"><span><i class="dot" style="background:#cf8a2a"></i>نگران/سردرگم</span><span><i class="dot" style="background:#7f91a3"></i>خنثی/مسئله‌محور</span><span><i class="dot" style="background:#c84d4d"></i>ناراضی/کلافه</span></div>
+</div>
+</section>
+<section class="section">
+<h2 class="section-title">فراوانی سناریوها در پایش جدید</h2>
+<div class="card chart-card">
+<div class="chart-sub">طبقه‌بندی «سناریوی اصلی» برای ۲۰۱ مورد قطعی؛ هر Session یک بار در یک سناریوی غالب شمرده شده است.</div>
+<div class="bar-row"><div class="bar-label">افزایش سرمایه / حق‌تقدم / سهام جایزه / تسه</div><div class="track"><div class="fill orange" style="width:100%"></div></div><div class="value">۹۱ | ۴۵٫۳٪</div></div>
+<div class="bar-row"><div class="bar-label">خروج/فروش در کارگزاری دیگر و ورود مجدد</div><div class="track"><div class="fill" style="width: 34.0659%;"></div></div><div class="value">۳۱ | ۱۵٫۴٪</div></div>
+<div class="bar-row"><div class="bar-label">قیمت سربه‌سر / سود و زیان</div><div class="track"><div class="fill teal" style="width: 30.7692%;"></div></div><div class="value">۲۸ | ۱۳٫۹٪</div></div>
+<div class="bar-row"><div class="bar-label">نیاز به حذف یا اصلاح تراکنش خودکار</div><div class="track"><div class="fill teal" style="width: 30.7692%;"></div></div><div class="value">۲۸ | ۱۳٫۹٪</div></div>
+<div class="bar-row"><div class="bar-label">سپرده صفر یا نبود دارایی واقعی</div><div class="track"><div class="fill" style="width: 15.3846%;"></div></div><div class="value">۱۴ | ۷٫۰٪</div></div>
+<div class="bar-row"><div class="bar-label">اجرا نشدن یا رفع ناقص</div><div class="track"><div class="fill" style="width: 4.3956%;"></div></div><div class="value">۴ | ۲٫۰٪</div></div>
+<div class="bar-row"><div class="bar-label">سایر مغایرت‌های مستقیم</div><div class="track"><div class="fill" style="width: 4.3956%;"></div></div><div class="value">۴ | ۲٫۰٪</div></div>
+<div class="bar-row"><div class="bar-label">تداخل واضح با تراکنش دستی قبلی</div><div class="track"><div class="fill" style="width: 1.0989%;"></div></div><div class="value">۱ | ۰٫۵٪</div></div>
+</div>
+</section>
+<section class="section">
+<h2 class="section-title">جدول فراوانی سناریوها — قبل و بعد</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>سناریو</th><th>گزارش پایه — تعداد</th><th>گزارش پایه — سهم</th><th>پایش جدید — تعداد </th><th>پایش جدید — سهم</th><th>توضیح</th></tr></thead>
+<tbody>
+<tr><td class="em"> چرخه انتقال رفت‌وبرگشتی<br/>توضیح سناریو: <span id="docs-internal-guid-2a5634c2-7fff-4917-dc6a-11bdf4c17992" style="font-weight:normal"><span style="color: rgb(23, 33, 43); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap"> این چرخه به این معنی است که مشتری ابتدا نماد را با ناظر خروجی از آگاه خارج میکند (مربوط به قبل از لانچ) و سپس مجددا به آگاه باز میگردد و این در حالی است که بخشی از دارایی خود را به فروش رسانده است. در این حالت سیستم به اندازه تعداد اضافه شده تراکنش دستی خرید ثبت میکند که منجر به مغایرت می شود.</span></span></td><td>۴۰</td><td>۳۳٫۳٪</td><td>۳۱</td><td>۱۵٫۴٪</td><td class="pos">کاهش سهم از ترکیب مسائل</td></tr>
+<tr><td class="em">افزایش سرمایه / حق‌تقدم / سهام جایزه / تسه<br/>توضیح سناریو: <span id="docs-internal-guid-a3b68bff-7fff-536f-f43c-5075dec62c84" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">پرداخت ارزش اسمی، ثبت افزایش سرمایه یا سهام جایزه با تغییر ناظر تداخل کرده و تعداد تکراری یا مغایرت ساخته است.</span></span></td><td>۲۳ + ۷ مورد تسه جداگانه</td><td>۱۹٫۲٪ + ۵٫۸٪</td><td>۹۱</td><td>۴۵٫۳٪</td><td class="neg">ریسک غالب جدید</td></tr>
+<tr><td class="em">سپرده صفر / تکمیل‌نشدن تغییر ناظر<br/>توضیح سناریو: <span id="docs-internal-guid-096d76ff-7fff-6938-592b-d100fb7fe592" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">فرآیند ناظر تکمیل نشده یا سپرده صفر است، ولی تراکنش دستی خرید در سبد ایجاد شده است.</span></span></td><td>۹</td><td>۷٫۵٪</td><td>۱۴</td><td>۷٫۰٪</td><td>سهم تقریباً پایدار</td></tr>
+<tr><td class="em">وجود تراکنش دستی قبلی<br/>توضیح سناریو: <span id="docs-internal-guid-5ba87f64-7fff-f9ba-c623-3c8862fb157e" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">قبل از تغییر ناظر روی نماد سابقه دستی وجود داشته و تراکنش خودکار جدید باعث دوباره‌شماری شده است؛ نمونه پرتکرار: پالایش.</span></span></td><td>۸</td><td>۶٫۷٪</td><td>۱</td><td>۰٫۵٪</td><td>در سناریوی اصلی جدید کمتر دیده شده است</td></tr>
+<tr><td class="em">اجرا نشدن / رفع ناقص<br/>توضیح سناریو: <span id="docs-internal-guid-f82b1a2d-7fff-a81a-d912-f7a6b1b3f7f1" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">قبل از تغییر ناظر روی نماد سابقه دستی وجود داشته و تراکنش خودکار جدید باعث دوباره‌شماری شده است.</span></span></td><td>۳۴</td><td>۲۸٫۳٪</td><td>۴</td><td>۲٫۰٪</td><td class="pos">افت محسوس در سناریوی اصلی</td></tr>
+<tr><td class="em">عدم امکان حذف / نیاز به اصلاح رکورد<br/><span id="docs-internal-guid-02726ffa-7fff-25d3-c474-b6e19a5cd9d9" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">مشتری برای خنثی‌کردن دارایی نمایشی، از کارشناس میخواهد موضوع را رفع کند. کارشناس مشتری را به انجام این کار از سامانه خود تشویق میکند. زیرا دسترسی حذف تراکنش دستی برای کارشناس وجود ندارد.</span></span></td><td>۱۹</td><td>۱۵٫۸٪</td><td>۲۸</td><td>۱۳٫۹٪</td><td>مسئله اصلاح و خنثی‌سازی همچنان پابرجاست</td></tr>
+<tr><td class="em">قیمت سربه‌سر / سود و زیان<br/>توضیح سناریو: <span id="docs-internal-guid-cc6a8086-7fff-cb54-fcaf-ef1e17d9623d" style="font-weight:normal"><span style="color: rgb(0, 0, 0); background-color: transparent; font-variant: normal; vertical-align: baseline; white-space: pre-wrap">تعداد ممکن است اصلاح شود، اما قیمت ثبت خودکار باعث تغییر بهای تمام‌شده، قیمت سربه‌سر یا سود و زیان شده است.</span></span></td><td>۱۸</td><td>۱۵٫۰٪</td><td>۲۸</td><td>۱۳٫۹٪</td><td>سهم مشابه؛ اثر مالی/تحلیلی همچنان مهم است</td></tr>
+</tbody>
+</table>
+</div>
+<div class="note" style="margin-top:10px"><strong>احتیاط روش‌شناختی:</strong> سناریوهای گزارش پایه هم‌پوشان بودند و جمع فراوانی آن‌ها از ۱۲۰ بیشتر می‌شود؛ در پایش جدید جدول اصلی بر «سناریوی غالب» و طبقه‌بندی انحصاری ۲۰۱ مورد بنا شده است. بنابراین این جدول برای مشاهده جهت تغییر مناسب است، نه آزمون آماری یک‌به‌یک.</div></section><section class="section split">
+<div class="card">
+<div class="chart-title">حس مشتری — تعداد</div>
+<div class="chart-sub">مقایسه فراوانی مطلق در جامعه‌های متفاوت</div>
+<div class="table-wrap" style="border-radius:12px">
+<table style="min-width:0"><thead><tr><th>حس</th><th>پایه</th><th>جدید</th></tr></thead><tbody>
+<tr><td>نگران / سردرگم</td><td>۵۱</td><td><b>۱۵۳</b></td></tr>
+<tr><td>خنثی / مسئله‌محور</td><td>۴۱</td><td><b>۹</b></td></tr>
+<tr><td>ناراضی / کلافه</td><td>۲۸</td><td><b>۳۹</b></td></tr>
+<tr><td class="em">جمع</td><td class="em">۱۲۰</td><td class="em">۲۰۱</td></tr>
+</tbody></table>
+</div>
+<div class="note" style="margin-top:12px">افزایش سهم «نگران/سردرگم» لزوماً به معنای افزایش شدت خشم نیست؛ بیشتر نشان می‌دهد مشتری نمی‌داند کدام عدد واقعی است، چه تعداد قابل فروش است و اثر رکورد سیستمی بر سود و زیان چیست.</div>
+</div>
+</section>
+<section class="section">
+<h2 class="section-title">اقدامات پیشنهادی </h2>
+<div class="card big-message">
+<ol style="margin:0;padding-right:22px">
+<li><b>اولویت ۱ — رویدادهای شرکتی:</b> منطق ثبت خودکار باید قبل از ایجاد رکورد، افزایش سرمایه، حق‌تقدم، سهام جایزه و وضعیت تسه را با دارایی سپرده‌گذاری‌شده تطبیق دهد.</li>
+<li><b>اولویت ۲ — ایمنی اصلاح:</b> وقتی رکورد خودکار اشتباه است، حذف/اصلاح باید شفاف و بدون ایجاد رکورد جبرانی پیچیده برای مشتری انجام شود. کارشناس امکان حذف تراکنش دستی را ندارد</li>
+<li><b>اولویت ۳ — شفافیت سبد:</b> منبع رکورد و تفاوت «تعداد کل» با «تعداد سپرده‌گذاری و قابل فروش» باید در UI قابل تشخیص باشد تا تماس ناشی از ابهام کاهش پیدا کند.</li></ol></div></section>
+</div>
+
+<div class="footer-note">این نسخه با هدف ارائه مدیریتی بازطراحی شده است: پیام کلیدی در ابتدای صفحه، شاخص‌های کلیدی در یک نگاه، جداول و نمودارهای مقایسه‌ای برای مشاهده سریع، و جزئیات کامل برای بررسی عمیق‌تر.</div>
+</div></body></html>
